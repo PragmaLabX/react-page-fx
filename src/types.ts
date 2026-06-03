@@ -11,7 +11,7 @@ export interface DurationOptions {
   blur: number
 }
 
-export interface ScreenEntry {
+export interface PageEntry {
   id: string
   pageName: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,7 +20,7 @@ export interface ScreenEntry {
   effect: EffectName
   step: TransitionStep
   parentId: string | null
-  /** Effect to apply to the parent screen while this screen is active above it */
+  /** Effect to apply to the parent page while this page is active above it */
   parentEffect: EffectName
   /** Derived from the active child — drives the parent's visual modifier */
   activeChildEffect: EffectName | null
@@ -38,7 +38,7 @@ export interface NavigateOptions {
   showBackButton?: boolean
   onBack?: () => void
   className?: string
-  /** Which effect the parent screen should display while this screen is open */
+  /** Which effect the parent page should display while this page is open */
   parentEffect?: EffectName
 }
 
@@ -47,21 +47,25 @@ export interface PreloadHandle {
   updateProps(props: Record<string, unknown>): void
 }
 
-export interface ScreenNavigator {
-  nextScreen(options: NavigateOptions | PreloadHandle): void
-  backScreen(): void
-  preloadScreen(options: NavigateOptions): PreloadHandle
-  deleteScreens(pageNames: string[]): void
+export interface PageNavigator {
+  nextPage(options: NavigateOptions | PreloadHandle): void
+  backPage(): void
+  preloadPage(options: NavigateOptions): PreloadHandle
+  deletePages(pageNames: string[]): void
 }
 
-export interface ScreenFXProps {
-  initScreen: {
+export interface PageFXConfig {
+  durations?: Partial<Omit<DurationOptions, 'none'>>
+  baseClass?: string
+  BackButton?: ComponentType<{ onClick: () => void }>
+}
+
+export interface PageFXProps {
+  initPage: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Component: ComponentType<any>
     pageName?: string
     props?: Record<string, unknown>
   }
-  durations?: Partial<Omit<DurationOptions, 'none'>>
-  BackButton?: ComponentType<{ onClick: () => void }>
-  baseClass?: string
+  config?: PageFXConfig
 }

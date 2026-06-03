@@ -1,14 +1,8 @@
-import { useScreenNavigator } from 'react-page-fx'
+import { usePageNavigator } from 'react-page-fx'
 import { Btn, CodeBlock, Label, Section } from './SlideScreen'
 
-/**
- * Demonstrates: effect: 'slide' + parentEffect: 'blur'
- *
- * This screen uses a semi-transparent background so you can see
- * the blurred home screen behind it — the intended use case for parentEffect: 'blur'.
- */
 export default function BlurScreen() {
-  const { backScreen } = useScreenNavigator()
+  const { backPage } = usePageNavigator()
 
   return (
     <div style={screen}>
@@ -34,7 +28,7 @@ export default function BlurScreen() {
       </Section>
 
       <div style={{ flex: 1 }} />
-      <Btn label="← Back to Home" color="#f59e0b" outline onClick={backScreen} />
+      <Btn label="← Back to Home" color="#f59e0b" outline onClick={backPage} />
     </div>
   )
 }

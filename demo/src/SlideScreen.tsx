@@ -1,12 +1,8 @@
-import { useScreenNavigator } from 'react-page-fx'
+import { usePageNavigator } from 'react-page-fx'
 import FadeScreen from './FadeScreen'
 
-/**
- * Demonstrates: effect: 'slide' + parentEffect: 'slide'
- * Also shows nested navigation (open another screen from here).
- */
 export default function SlideScreen() {
-  const { nextScreen, backScreen } = useScreenNavigator()
+  const { nextPage, backPage } = usePageNavigator()
 
   return (
     <div style={screen('#052e16')}>
@@ -23,16 +19,15 @@ export default function SlideScreen() {
         the standard iOS/Android navigation depth cue.
       </p>
 
-      {/* Nested navigation demo */}
       <Section title="Nested navigation">
         <p style={{ fontSize: 13, color: '#6ee7b7', marginBottom: 12, lineHeight: 1.5 }}>
-          You can push another screen from here. Going back unwinds the stack.
+          You can push another page from here. Going back unwinds the stack.
         </p>
         <Btn
           label="Open FadeScreen (nested) →"
           color="#4ade80"
           onClick={() =>
-            nextScreen({
+            nextPage({
               Component: FadeScreen,
               effect: 'fade',
               showBackButton: true,
@@ -42,7 +37,7 @@ export default function SlideScreen() {
       </Section>
 
       <div style={{ flex: 1 }} />
-      <Btn label="← Back to Home" color="#4ade80" outline onClick={backScreen} />
+      <Btn label="← Back to Home" color="#4ade80" outline onClick={backPage} />
     </div>
   )
 }

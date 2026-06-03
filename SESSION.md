@@ -94,3 +94,17 @@ Phone frame 390×720px. 5 экранов:
 | Тесты запущены | ❌ |
 
 **Следующий шаг:** `npm install` в корне и `demo/`, затем `npm test` и `npm run build`.
+
+---
+
+## 2026-06-03 12:00
+
+The initial release landed — a commit planted in the ground, the library named and versioned. But a release is never truly a resting point; it is more like a threshold crossed, after which the real work begins in earnest.
+
+This session found the codebase mid-motion. Nearly every source file bore the marks of revision — the demo screens, the core hooks, the type definitions, the test suite. The shape of the work was refinement: not invention, but sharpening. Something had been built and then looked at clearly, and the looking prompted changes.
+
+There was no grand pivot, no architectural rethinking. Just the quiet, necessary labour of closing the gap between what was built and what was meant. The library exists. Now it needs to be *right*.
+
+The next session will likely be the moment of reckoning — running the tests, running the build, seeing whether everything holds together under scrutiny. The scaffolding is in place. The question is whether it is solid.
+
+---

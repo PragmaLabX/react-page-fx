@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 import { ScreenLayer } from './ScreenLayer'
-import type { DurationOptions, ScreenFXProps } from './types'
+import type { DurationOptions, PageFXProps } from './types'
 import { buildCSS } from './utils/css'
 import { useScreenStack } from './utils/useScreenStack'
 
@@ -11,14 +11,15 @@ const DEFAULT_DURATIONS: DurationOptions = {
   blur: 150,
 }
 
-const DEFAULT_BASE_CLASS = 'sfx-screen'
+const DEFAULT_BASE_CLASS = 'pfx-page'
 
-export const ScreenFX: React.FC<ScreenFXProps> = ({
-  initScreen,
-  durations: durationOverrides,
-  BackButton,
-  baseClass = DEFAULT_BASE_CLASS,
-}) => {
+export const PageFX: React.FC<PageFXProps> = ({ initPage, config }) => {
+  const {
+    durations: durationOverrides,
+    baseClass = DEFAULT_BASE_CLASS,
+    BackButton,
+  } = config ?? {}
+
   const durations: DurationOptions = useMemo(
     () => ({ ...DEFAULT_DURATIONS, ...durationOverrides }),
     // Spread the individual values so the memo only re-runs when a value actually changes
@@ -35,7 +36,7 @@ export const ScreenFX: React.FC<ScreenFXProps> = ({
   const [entries, actions] = useScreenStack(durations)
   const initialized = useRef(false)
 
-  // Push the initial screen once. Using a ref guard instead of an empty-deps effect
+  // Push the initial page once. Using a ref guard instead of an empty-deps effect
   // because StrictMode double-invokes effects — the ref prevents a duplicate entry.
   useEffect(() => {
     if (initialized.current) return
@@ -43,9 +44,9 @@ export const ScreenFX: React.FC<ScreenFXProps> = ({
 
     actions.push(
       {
-        Component: initScreen.Component,
-        pageName: initScreen.pageName,
-        props: initScreen.props,
+        Component: initPage.Component,
+        pageName: initPage.pageName,
+        props: initPage.props,
         effect: 'none',
         showBackButton: false,
       },

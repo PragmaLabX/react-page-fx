@@ -1,12 +1,8 @@
-import { useScreenNavigator } from 'react-page-fx'
+import { usePageNavigator } from 'react-page-fx'
 import { Btn, CodeBlock, Label, Section } from './SlideScreen'
 
-/**
- * This screen was preloaded by FadeScreen before the user tapped "open".
- * It activated instantly because it was already mounted in the DOM.
- */
 export default function PreloadedScreen() {
-  const { backScreen } = useScreenNavigator()
+  const { backPage } = usePageNavigator()
 
   return (
     <div style={screen}>
@@ -18,16 +14,16 @@ export default function PreloadedScreen() {
       ]} />
 
       <p style={{ fontSize: 14, color: '#fed7aa', lineHeight: 1.6, marginBottom: 28 }}>
-        This screen was mounted off-screen by <code style={code}>preloadScreen()</code>{' '}
+        This page was mounted off-screen by <code style={code}>preloadPage()</code>{' '}
         the moment FadeScreen appeared. No render lag when you opened it.
       </p>
 
       <Section title="How it works">
         <p style={{ fontSize: 13, color: '#fdba74', lineHeight: 1.6 }}>
-          <code style={code}>const handle = preloadScreen({'{ Component, ... }'})</code>
+          <code style={code}>const handle = preloadPage({'{ Component, ... }'})</code>
           <br /><br />
-          The screen sits at <code style={code}>step: &apos;offscreen&apos;</code> — in the DOM
-          but invisible. Calling <code style={code}>nextScreen(handle)</code> transitions it
+          The page sits at <code style={code}>step: &apos;offscreen&apos;</code> — in the DOM
+          but invisible. Calling <code style={code}>nextPage(handle)</code> transitions it
           to <code style={code}>active</code> immediately.
           <br /><br />
           Use <code style={code}>handle.updateProps()</code> to update its props before opening.
@@ -35,7 +31,7 @@ export default function PreloadedScreen() {
       </Section>
 
       <div style={{ flex: 1 }} />
-      <Btn label="← Back" color="#f97316" outline onClick={backScreen} />
+      <Btn label="← Back" color="#f97316" outline onClick={backPage} />
     </div>
   )
 }

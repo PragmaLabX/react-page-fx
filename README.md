@@ -1,6 +1,6 @@
 # react-page-fx
 
-Lightweight React component for managing screens and transition effects. Wrap your app once, then navigate between screens with `slide`, `fade`, or `blur` effects.
+Lightweight React component for managing pages and transition effects. Wrap your app once, then navigate between pages with `slide`, `fade`, or `blur` effects.
 
 ## Installation
 
@@ -11,33 +11,35 @@ npm install react-page-fx
 ## Quick start
 
 ```tsx
-import { ScreenFX } from 'react-page-fx'
+import { PageFX } from 'react-page-fx'
 
 const App = () => (
-  <ScreenFX
-    initScreen={{ Component: HomeScreen }}
-    durations={{ slide: 300, fade: 200 }}  // optional
+  <PageFX
+    initPage={{ Component: HomePage }}
+    config={{
+      durations: { slide: 300, fade: 200 },  // optional
+    }}
   />
 )
 ```
 
-Inside any screen component, import the navigation hook:
+Inside any page component, import the navigation hook:
 
 ```tsx
-import { useScreenNavigator } from 'react-page-fx'
+import { usePageNavigator } from 'react-page-fx'
 
-const HomeScreen = () => {
-  const { nextScreen, backScreen } = useScreenNavigator()
+const HomePage = () => {
+  const { nextPage, backPage } = usePageNavigator()
 
   return (
-    <button onClick={() => nextScreen({
-      Component: AboutScreen,
+    <button onClick={() => nextPage({
+      Component: AboutPage,
       effect: 'slide',
       showBackButton: true,
-      pageName: 'about',           // optional — used by deleteScreens
+      pageName: 'about',           // optional — used by deletePages
       props: { title: 'Hello' },   // optional — passed to the component
       onBack: () => console.log('went back'), // optional
-      parentEffect: 'slide',       // optional — shifts this screen left while child is open
+      parentEffect: 'slide',       // optional — shifts this page left while child is open
     })}>
       Open About
     </button>
@@ -47,64 +49,70 @@ const HomeScreen = () => {
 
 ## API
 
-### `<ScreenFX>`
+### `<PageFX>`
 
-| Prop          | Type                                    | Description                                    |
-|---------------|-----------------------------------------|------------------------------------------------|
-| `initScreen`  | `{ Component, pageName?, props? }`      | The first screen to show                       |
-| `durations`   | `{ fade?, slide?, blur? }` (ms)         | Override default transition durations          |
-| `BackButton`  | `ComponentType<{ onClick: () => void }>` | Custom back button (default: semi-transparent circle) |
-| `baseClass`   | `string`                                | CSS class prefix (default: `sfx-screen`)       |
+| Prop       | Type                               | Description             |
+|------------|------------------------------------|-------------------------|
+| `initPage` | `{ Component, pageName?, props? }` | The first page to show  |
+| `config`   | `PageFXConfig`                     | Shared display settings |
 
-### `useScreenNavigator()`
+### `PageFXConfig`
 
-Returns a `ScreenNavigator` bound to the current screen:
+| Field        | Type                                     | Description                                   |
+|--------------|------------------------------------------|-----------------------------------------------|
+| `durations`  | `{ fade?, slide?, blur? }` (ms)          | Override default transition durations         |
+| `baseClass`  | `string`                                 | CSS class prefix (default: `pfx-page`)        |
+| `BackButton` | `ComponentType<{ onClick: () => void }>` | Custom back button component                  |
+
+### `usePageNavigator()`
+
+Returns a `PageNavigator` bound to the current page:
 
 ```ts
 const {
-  nextScreen,      // navigate to a new screen
-  backScreen,      // go back (triggers onBack + exit animation)
-  preloadScreen,   // mount a screen off-screen for instant later navigation
-  deleteScreens,   // remove screens by pageName
-} = useScreenNavigator()
+  nextPage,    // navigate to a new page
+  backPage,    // go back (triggers onBack + exit animation)
+  preloadPage, // mount a page off-screen for instant later navigation
+  deletePages, // remove pages by pageName
+} = usePageNavigator()
 ```
 
-### `nextScreen(options | PreloadHandle)`
+### `nextPage(options | PreloadHandle)`
 
 ```ts
-nextScreen({
-  Component: MyScreen,
+nextPage({
+  Component: MyPage,
   pageName?: string,
   effect?: 'none' | 'slide' | 'fade' | 'blur',  // default: 'none'
   props?: Record<string, unknown>,
   showBackButton?: boolean,
-  onBack?: () => void,                            // called when this screen is popped
-  parentEffect?: 'slide' | 'blur',               // visual effect on the opening screen
+  onBack?: () => void,                            // called when this page is popped
+  parentEffect?: 'slide' | 'blur',               // visual effect on the opening page
 })
 ```
 
-### `preloadScreen(options)` → `PreloadHandle`
+### `preloadPage(options)` → `PreloadHandle`
 
-Mounts the screen off-screen immediately. Activate it later by passing the handle to `nextScreen`:
+Mounts the page off-screen immediately. Activate it later by passing the handle to `nextPage`:
 
 ```tsx
-const handle = preloadScreen({ Component: HeavyScreen, props: { id: 1 } })
+const handle = preloadPage({ Component: HeavyPage, props: { id: 1 } })
 
 // Update props before opening:
 handle.updateProps({ id: 2 })
 
 // Open instantly (no render lag):
-nextScreen(handle)
+nextPage(handle)
 ```
 
 ### Effects
 
-| Effect  | Description                                          |
-|---------|------------------------------------------------------|
-| `none`  | No animation (instant)                               |
-| `slide` | Slide in from the right                              |
-| `fade`  | Fade in / out                                        |
-| `blur`  | Blur the parent screen (use as `parentEffect`)       |
+| Effect  | Description                                   |
+|---------|-----------------------------------------------|
+| `none`  | No animation (instant)                        |
+| `slide` | Slide in from the right                       |
+| `fade`  | Fade in / out                                 |
+| `blur`  | Blur the parent page (use as `parentEffect`)  |
 
 ## Demo
 

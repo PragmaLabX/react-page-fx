@@ -1,22 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
-import { type PreloadHandle, useScreenNavigator } from 'react-page-fx'
+import { type PreloadHandle, usePageNavigator } from 'react-page-fx'
 import PreloadedScreen from './PreloadedScreen'
 import { Btn, CodeBlock, Label, Section } from './SlideScreen'
 
-/**
- * Demonstrates: effect: 'fade'
- * Also demonstrates: preloadScreen — mounts PreloadedScreen off-screen on mount,
- * then activates it instantly when the user taps "Open Preloaded".
- */
 export default function FadeScreen() {
-  const { nextScreen, backScreen, preloadScreen } = useScreenNavigator()
+  const { nextPage, backPage, preloadPage } = usePageNavigator()
 
   const handleRef = useRef<PreloadHandle | null>(null)
   const [preloadReady, setPreloadReady] = useState(false)
 
-  // Preload as soon as this screen mounts
   useEffect(() => {
-    handleRef.current = preloadScreen({
+    handleRef.current = preloadPage({
       Component: PreloadedScreen,
       pageName: 'preloaded',
       effect: 'slide',
@@ -45,9 +39,9 @@ export default function FadeScreen() {
       <Section title="Preload demo">
         <p style={{ fontSize: 13, color: '#a78bfa', marginBottom: 12, lineHeight: 1.5 }}>
           <code style={{ background: 'rgba(255,255,255,0.1)', padding: '1px 5px', borderRadius: 4 }}>
-            preloadScreen()
+            preloadPage()
           </code>
-          {' '}was called when this screen mounted. The next screen is
+          {' '}was called when this page mounted. The next page is
           already in the DOM — activation is instant.
         </p>
 
@@ -65,13 +59,13 @@ export default function FadeScreen() {
           label={preloadReady ? 'Open Preloaded Screen →' : 'Waiting for preload…'}
           color="#a855f7"
           onClick={() => {
-            if (handleRef.current) nextScreen(handleRef.current)
+            if (handleRef.current) nextPage(handleRef.current)
           }}
         />
       </Section>
 
       <div style={{ flex: 1 }} />
-      <Btn label="← Back" color="#a855f7" outline onClick={backScreen} />
+      <Btn label="← Back" color="#a855f7" outline onClick={backPage} />
     </div>
   )
 }

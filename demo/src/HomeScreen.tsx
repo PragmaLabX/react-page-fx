@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { useScreenNavigator } from 'react-page-fx'
+import { usePageNavigator } from 'react-page-fx'
 import SlideScreen from './SlideScreen'
 import FadeScreen from './FadeScreen'
 import BlurScreen from './BlurScreen'
 
 export default function HomeScreen() {
-  const { nextScreen } = useScreenNavigator()
+  const { nextPage } = usePageNavigator()
   const [lastReturn, setLastReturn] = useState<string | null>(null)
 
   return (
@@ -21,7 +21,7 @@ export default function HomeScreen() {
         </p>
       </div>
 
-      {/* onBack callback badge — appears after returning from a screen */}
+      {/* onBack callback badge — appears after returning from a page */}
       <div style={{
         height: 38, marginBottom: 20,
         display: 'flex', alignItems: 'center',
@@ -51,7 +51,7 @@ export default function HomeScreen() {
           effect="slide"
           extra="parentEffect: 'slide'"
           description="Slides in from the right. Parent shifts left behind it — the iOS navigation style."
-          onClick={() => nextScreen({
+          onClick={() => nextPage({
             Component: SlideScreen,
             effect: 'slide',
             showBackButton: true,
@@ -66,7 +66,7 @@ export default function HomeScreen() {
           effect="fade"
           extra="+ preload demo"
           description="Crossfade transition. Screen is preloaded in the background for instant activation."
-          onClick={() => nextScreen({
+          onClick={() => nextPage({
             Component: FadeScreen,
             effect: 'fade',
             showBackButton: true,
@@ -80,7 +80,7 @@ export default function HomeScreen() {
           effect="slide"
           extra="parentEffect: 'blur'"
           description="Slides in over a blurred parent. Ideal for overlay and modal-style screens."
-          onClick={() => nextScreen({
+          onClick={() => nextPage({
             Component: BlurScreen,
             effect: 'slide',
             showBackButton: true,

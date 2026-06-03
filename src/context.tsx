@@ -1,12 +1,12 @@
 import { createContext, useContext } from 'react'
-import type { ScreenNavigator } from './types'
+import type { PageNavigator } from './types'
 
-export const ScreenContext = createContext<ScreenNavigator | null>(null)
+export const PageContext = createContext<PageNavigator | null>(null)
 
-export function useScreenNavigator(): ScreenNavigator {
-  const ctx = useContext(ScreenContext)
+export function usePageNavigator(): PageNavigator {
+  const ctx = useContext(PageContext)
   if (!ctx) {
-    throw new Error('useScreenNavigator must be called inside a <ScreenFX /> tree')
+    throw new Error('usePageNavigator must be called inside a <PageFX /> tree')
   }
   return ctx
 }

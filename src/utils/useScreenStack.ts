@@ -3,8 +3,8 @@ import type {
   DurationOptions,
   EffectName,
   NavigateOptions,
+  PageEntry,
   PreloadHandle,
-  ScreenEntry,
   TransitionStep,
 } from '../types'
 import { generateId } from './generateId'
@@ -17,7 +17,7 @@ function makeEntry(
   options: NavigateOptions,
   parentId: string | null,
   step: TransitionStep,
-): ScreenEntry {
+): PageEntry {
   return {
     id: generateId(options.pageName),
     pageName: options.pageName ?? '',
@@ -34,21 +34,21 @@ function makeEntry(
   }
 }
 
-export interface ScreenStackActions {
-  /** Navigate to a new screen or activate a preloaded one */
+export interface PageStackActions {
+  /** Navigate to a new page or activate a preloaded one */
   push(options: NavigateOptions | PreloadHandle, parentId: string | null): void
-  /** Start the exit animation and remove the screen after it completes */
+  /** Start the exit animation and remove the page after it completes */
   pop(id: string): void
-  /** Mount a screen off-screen for instant future activation */
+  /** Mount a page off-screen for instant future activation */
   preload(options: NavigateOptions, parentId: string | null): PreloadHandle
-  /** Remove screens by pageName */
+  /** Remove pages by pageName */
   deleteByNames(pageNames: string[]): void
-  /** Called by ScreenLayer after the first paint to kick off the enter transition */
+  /** Called by PageLayer after the first paint to kick off the enter transition */
   advanceStep(id: string, step: TransitionStep): void
 }
 
-export function useScreenStack(durations: DurationOptions): [ScreenEntry[], ScreenStackActions] {
-  const [entries, setEntries] = useState<ScreenEntry[]>([])
+export function useScreenStack(durations: DurationOptions): [PageEntry[], PageStackActions] {
+  const [entries, setEntries] = useState<PageEntry[]>([])
 
   // Refs keep callbacks stable — no stale-closure bugs when reading inside setTimeout
   const entriesRef = useRef(entries)
@@ -74,7 +74,7 @@ export function useScreenStack(durations: DurationOptions): [ScreenEntry[], Scre
   const push = useCallback(
     (options: NavigateOptions | PreloadHandle, parentId: string | null) => {
       if (isPreloadHandle(options)) {
-        // Activate a previously preloaded screen
+        // Activate a previously preloaded page
         const entry = entriesRef.current.find(e => e.id === options.id)
         if (!entry) return
 
@@ -92,7 +92,7 @@ export function useScreenStack(durations: DurationOptions): [ScreenEntry[], Scre
           setParentChildEffect(parentId, entry.parentEffect)
         }
       }
-      // ScreenLayer's useLayoutEffect advances 'entering' → 'active' after the first paint
+      // PageLayer's useLayoutEffect advances 'entering' → 'active' after the first paint
     },
     [setParentChildEffect],
   )

@@ -1,10 +1,11 @@
-export { ScreenFX } from './ScreenFX.js'
-export { useScreenNavigator } from './context.js'
+export { PageFX } from './ScreenFX.js'
+export { usePageNavigator } from './context.js'
 export type {
   DurationOptions,
   EffectName,
   NavigateOptions,
+  PageFXConfig,
+  PageFXProps,
+  PageNavigator,
   PreloadHandle,
-  ScreenFXProps,
-  ScreenNavigator,
 } from './types.js'
